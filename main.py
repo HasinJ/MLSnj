@@ -77,6 +77,7 @@ class Scraper():
         }
 
     def start(self):
+        print(self.headerBase['Referer'])
         r=None
         self.headerBase['user-agent']=UserAgent().random
         with requests.Session() as s:
@@ -152,6 +153,7 @@ class Scraper():
     def setCounty(self, county: str):
         self.headerBase['Referer'] = 'https://www.njmls.com/listings/index.cfm?action=dsp.results&county=&state=NJ&proptype=1%2C3a%2C3b%2C2&searchtype=county_search&status=A&mlsSearch=1&minprice=&maxprice='
         self.headerBase['Referer'] = re.sub(r"(?<=county\=).?(?=&)", county, self.headerBase.get('Referer'))
+        self.params['county']=county
 
     def addPage(self, num: int):
         self.params['page'] = f"{int(self.params.get('page')) + 1}"
