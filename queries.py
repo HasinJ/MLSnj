@@ -21,7 +21,7 @@ class Queries(config):
     def loadAddress(self, test=False):
         try:
             self.cursor.execute("""
-            INSERT INTO addressTBL (`street`, `city`, `state`, `zip`, `county`)
+            INSERT INTO addresstbl (`street`, `city`, `state`, `zip`, `county`)
             VALUES (%(street)s, %(city)s, %(state)s, %(zip)s, %(county)s)
             ON DUPLICATE KEY UPDATE `county`=%(county)s
             ;""", self.__extractions['address'])
@@ -31,7 +31,7 @@ class Queries(config):
             #print(f"LOADED ADDRESS: {self.__extractions['address']['street']}, {self.__extractions['address']['state']} inserted.")
 
         except self.MySQLdb._exceptions.IntegrityError: #https://stackoverflow.com/questions/4205181/insert-into-a-mysql-table-or-update-if-exists
-            print(f"Address: {self.__extractions['address']['street']}, {self.__extractions['address']['state']} exists in addressTBL.")
+            print(f"Address: {self.__extractions['address']['street']}, {self.__extractions['address']['state']} exists in addresstbl.")
 
         self.getUIDaddress(test)
 
@@ -42,7 +42,7 @@ class Queries(config):
             #print(f"LOADED REF: {self.__extractions['address']['street']}, {self.__extractions['address']['state']} inserted.")
 
         except self.MySQLdb._exceptions.IntegrityError: #https://stackoverflow.com/questions/4205181/insert-into-a-mysql-table-or-update-if-exists
-            print(f"Ref: {self.__extractions['address']['street']}, {self.__extractions['address']['state']} exists in refTBL.")
+            print(f"Ref: {self.__extractions['address']['street']}, {self.__extractions['address']['state']} exists in reftbl.")
 
     def loadDetails(self, test=False):
         self.__extractions['details']['UID'] = self.__extractions['UID']
