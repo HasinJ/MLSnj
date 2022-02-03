@@ -207,7 +207,7 @@ if __name__ == '__main__':
         #"CAPE MAY",
         #"CUMBERLAND",
         "ESSEX", #North
-        "GLOUCESTER",
+        #"GLOUCESTER",
         "HUDSON", #North
         "HUNTERDON", #Central
         "MERCER", #Central
@@ -224,7 +224,7 @@ if __name__ == '__main__':
     ]
 
     test = Scraper()
-    """
+    #"""
     for county in counties:
         time.sleep(random.randint(3,5))
         print("\n",county.upper())
@@ -241,6 +241,6 @@ if __name__ == '__main__':
         #reset
         test.resetCounters()
         print("\n")
-    """
-    test.onePage("/listings/index.cfm?action=dsp.info&mlsnum=21046492&openhouse=true&dayssince=15&countysearch=true", True)
+    #"""
+    #test.onePage("/listings/index.cfm?action=dsp.info&mlsnum=21046492&openhouse=true&dayssince=15&countysearch=true", True)
     #test.onePage("/listings/index.cfm?action=dsp.info&mlsnum=22002223&openhouse=true&dayssince=15&countysearch=true", True)
