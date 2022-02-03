@@ -35,9 +35,9 @@ class Queries(config):
 
         self.getUIDaddress(test)
 
-    def loadRef(self, href, test=False):
+    def loadRef(self, mlsnum, test=False):
         try:
-            self.cursor.execute("INSERT INTO reftbl (`UID`,`href`) VALUES (%(UID)s, %(href)s);", {'UID': self.__extractions['UID'], 'href': href});
+            self.cursor.execute("INSERT INTO reftbl (`UID`,`mls`) VALUES (%(UID)s, %(mls)s);", {'UID': self.__extractions['UID'], 'mls': mlsnum});
             self.mydb.commit()
             #print(f"LOADED REF: {self.__extractions['address']['street']}, {self.__extractions['address']['state']} inserted.")
 
@@ -89,7 +89,7 @@ class Queries(config):
 
         try:
             self.cursor.execute("""
-            INSERT INTO soldtbl (`UID`, `date`, `price`)
+            INSERT INTO prevtbl (`UID`, `date`, `price`)
             VALUES (%(UID)s, %(date)s, %(price)s)
             ON DUPLICATE KEY UPDATE `UID`=%(UID)s, `date`=%(date)s, `price`=%(price)s
             ;
@@ -102,5 +102,5 @@ class Queries(config):
             #print(f"LOADED LAST SOLD: {self.__extractions['address']['street']}, {self.__extractions['address']['state']} inserted.")
 
         except self.MySQLdb._exceptions.IntegrityError: #https://stackoverflow.com/questions/4205181/insert-into-a-mysql-table-or-update-if-exists
-            print(f"Last Sold: {self.__extractions['address']['street']}, {self.__extractions['address']['state']} exists in soldtbl.")
+            print(f"Last Sold: {self.__extractions['address']['street']}, {self.__extractions['address']['state']} exists in prevtbl.")
             return
