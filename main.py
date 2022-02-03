@@ -125,7 +125,7 @@ class Scraper():
 
                 queries = Queries(parser.getExtractions())
                 queries.loadAddress(test)
-                queries.loadRef(parser.getMLSNum)
+                queries.loadRef(parser.getMLSNum())
                 queries.loadDate(parser.listDate, test)
                 queries.loadDetails(test)
                 if(parser.soldDate):
