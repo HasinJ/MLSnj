@@ -12,6 +12,7 @@ import random
 import functools
 import csv
 import traceback
+import yagmail
 from fake_useragent import UserAgent
 
 #my imports
@@ -111,11 +112,10 @@ class Scraper():
         for c in classes:
             self.count+=1
             print(f"current: {self.count}")
+            href = c.next_sibling.next_sibling.contents[1]['href']
+            print(href)
 
             try:
-                href = c.next_sibling.next_sibling.contents[1]['href']
-                print(href)
-
                 self.mainSoup = self.requestIntoSoup(header=self.headerBase, extraURL=href)
                 if not self.mainSoup: continue
                 self.saveHTML(self.mainSoup.prettify(), fr"data\html\html{self.count}.html")
@@ -135,7 +135,8 @@ class Scraper():
                 queries.cursor.close()
 
             except Exception:
-                traceback.print_exc()
+                if not test: self.email(traceback.format_exc(), href)
+                else: traceback.print_exc()
 
             if(self.count>=self.maxItems): return
             #if(self.count % 1 == 0): return #testing house count
@@ -159,7 +160,20 @@ class Scraper():
             queries.cursor.close()
 
         except Exception:
-            traceback.print_exc()
+            if not test: self.email(traceback.format_exc(), href)
+            else: traceback.print_exc()
+
+    def email(self, str, href):
+        yag = yagmail.SMTP('hasin.choudhury@cplusmanagement.com')
+        link = f'<a href="https://www.njmls.com{href}">{href}</a>'
+        to = 'hasin.choudhury@cplusmanagement.com'
+        yag.send(
+            to = to,
+            subject = 'Error in NJMLS',
+            contents = [str, link]
+        )
+        print(f'Email sent to {to}.')
+        print(str)
 
     def saveHTML(self, html, dir):
         html_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), dir)
@@ -210,7 +224,7 @@ if __name__ == '__main__':
     ]
 
     test = Scraper()
-    #"""
+    """
     for county in counties:
         time.sleep(random.randint(3,5))
         print("\n",county.upper())
@@ -227,6 +241,6 @@ if __name__ == '__main__':
         #reset
         test.resetCounters()
         print("\n")
-    #"""
-    #test.onePage("/listings/index.cfm?action=dsp.info&mlsnum=21046492&openhouse=true&dayssince=15&countysearch=true", True)
+    """
+    test.onePage("/listings/index.cfm?action=dsp.info&mlsnum=21046492&openhouse=true&dayssince=15&countysearch=true", True)
     #test.onePage("/listings/index.cfm?action=dsp.info&mlsnum=22002223&openhouse=true&dayssince=15&countysearch=true", True)
